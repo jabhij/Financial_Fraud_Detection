@@ -54,7 +54,7 @@ X.loc[X.type == 'TRANSFER', 'type'] = 0
 X.loc[X.type == 'CASH_OUT', 'type'] = 1
 X.type = X.type.astype(int) # convert dtype('O') to dtype(int)
 
-
+# Detecting and imputing missing values
 Xfraud = X.loc[Y == 1]
 XnonFraud = X.loc[Y == 0]
 print('\nThe fraction of fraudulent transactions with \'oldBalanceDest\' = \
@@ -66,3 +66,12 @@ print('\nThe fraction of genuine transactions with \'oldBalanceDest\' = \
 newBalanceDest\' = 0 although the transacted \'amount\' is non-zero is: {}'.\
 format(len(XnonFraud.loc[(XnonFraud.oldBalanceDest == 0) & \
 (XnonFraud.newBalanceDest == 0) & (XnonFraud.amount)]) / (1.0 * len(XnonFraud))))
+
+
+# 
+X.loc[(X.oldBalanceDest == 0) & (X.newBalanceDest == 0) & (X.amount != 0), \
+      ['oldBalanceDest', 'newBalanceDest']] = - 1
+
+X.loc[(X.oldBalanceOrig == 0) & (X.newBalanceOrig == 0) & (X.amount != 0), \
+      ['oldBalanceOrig', 'newBalanceOrig']] = np.nan
+
