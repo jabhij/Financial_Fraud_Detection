@@ -32,6 +32,11 @@ print(df.head())
 df.isnull().values.any()
 
 
+"""
+Exploratory Data Analysis (EDA)- From EDA of section 2, we know that fraud only occurs in 'TRANSFER's and 'CASH_OUT's. So we assemble only the corresponding
+data in X for analysis.
+"""
+
 # Data Cleaning
 X = df.loc[(df.type == 'CASH-IN') | (df.type == 'CASH-OUT') | (df.type == 'DEBIT') | (df.type == 'PAYMENT') | (df.type == 'TRANSFER')]
 
@@ -48,3 +53,16 @@ X = X.drop(['nameOrig', 'nameDest', 'isFlaggedFraud'], axis = 1)
 X.loc[X.type == 'TRANSFER', 'type'] = 0
 X.loc[X.type == 'CASH_OUT', 'type'] = 1
 X.type = X.type.astype(int) # convert dtype('O') to dtype(int)
+
+
+Xfraud = X.loc[Y == 1]
+XnonFraud = X.loc[Y == 0]
+print('\nThe fraction of fraudulent transactions with \'oldBalanceDest\' = \
+\'newBalanceDest\' = 0 although the transacted \'amount\' is non-zero is: {}'.\
+format(len(Xfraud.loc[(Xfraud.oldBalanceDest == 0) & \
+(Xfraud.newBalanceDest == 0) & (Xfraud.amount)]) / (1.0 * len(Xfraud))))
+
+print('\nThe fraction of genuine transactions with \'oldBalanceDest\' = \
+newBalanceDest\' = 0 although the transacted \'amount\' is non-zero is: {}'.\
+format(len(XnonFraud.loc[(XnonFraud.oldBalanceDest == 0) & \
+(XnonFraud.newBalanceDest == 0) & (XnonFraud.amount)]) / (1.0 * len(XnonFraud))))
