@@ -68,10 +68,8 @@ format(len(XnonFraud.loc[(XnonFraud.oldBalanceDest == 0) & \
 (XnonFraud.newBalanceDest == 0) & (XnonFraud.amount)]) / (1.0 * len(XnonFraud))))
 
 
-# 
 X.loc[(X.oldBalanceDest == 0) & (X.newBalanceDest == 0) & (X.amount != 0), \
       ['oldBalanceDest', 'newBalanceDest']] = - 1
 
 X.loc[(X.oldBalanceOrig == 0) & (X.newBalanceOrig == 0) & (X.amount != 0), \
       ['oldBalanceOrig', 'newBalanceOrig']] = np.nan
-
